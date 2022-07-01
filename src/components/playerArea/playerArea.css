@@ -1,0 +1,21 @@
+.playerArea {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.playerName {
+  margin-right: 20px;
+  font-size: 1.25rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.allPieces {
+  display: flex;
+  align-items: center;
+}
+
+.piece {
+  margin: 0 10px;
+  border-radius: 50%;
+}
