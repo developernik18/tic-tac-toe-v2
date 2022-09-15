@@ -12,13 +12,38 @@ function App() {
   const playerOneActive = turn === "playerOne";
   const playerTwoActive = turn === "playerTwo";
 
-  const handlePlayerInfoUpdate = (newPlayerInfo) => {
-    if(newPlayerInfo.Id === 1) {
-      setPlayerOneInfo(newPlayerInfo);
+  const handleItemSelection = (allPieces) => {
+    if(turn === "playerOne") {
+      setPlayerOneInfo(prev => {return {...prev, Pieces: allPieces}});
     } else {
-      setPlayerTwoInfo(newPlayerInfo);
+      setPlayerTwoInfo(prev => {return {...prev, Pieces: allPieces}});
+    }
+  }
+
+  const saveUsedPieceInfo = (prev) => {
+    const allPieces = [...prev.Pieces];
+    allPieces.map(p => {
+      if(p.active && !p.used) {
+        p.used = true;
+        p.active = false;
+      }
+      return p;
+    });
+    return {...prev, Pieces: allPieces};
+  }
+
+  const handlePieceUsed = () => {
+    if(turn === "playerOne") {
+      setPlayerOneInfo(saveUsedPieceInfo);
+    } else {
+      setPlayerTwoInfo(saveUsedPieceInfo);
     }
 
+
+    setTurn(prev => {
+      if(prev === "playerOne") return "playerTwo";
+      if(prev === "playerTwo") return "playerOne";
+    })
   }
 
   return (
@@ -27,13 +52,16 @@ function App() {
         <PlayerArea 
           playerInfo={playerOneInfo} 
           activePlayer={playerOneActive}
-          updatePlayerInfo={handlePlayerInfoUpdate}
+          updateItemSelection={handleItemSelection}
         />
-        <PlayingArea />
+        <PlayingArea 
+          playerInfo={playerOneActive ? playerOneInfo : playerTwoInfo} 
+          handlePieceUsed={handlePieceUsed}
+        />
         <PlayerArea 
           playerInfo={playerTwoInfo} 
           activePlayer={playerTwoActive}
-          updatePlayerInfo={handlePlayerInfoUpdate}
+          updateItemSelection={handleItemSelection}
         />
       </div>
     </div>

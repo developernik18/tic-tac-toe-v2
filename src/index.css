@@ -6,3 +6,30 @@
 body {
   background-color: #f4f4f4;
 }
+
+.piece {
+  margin: 0 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}
+
+
+.yellow {
+  background-color: yellow;
+}
+
+.noColor {
+  background-color: transparent;
+}
+
+.cursor {
+  cursor: default;
+}

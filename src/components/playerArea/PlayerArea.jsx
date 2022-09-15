@@ -1,22 +1,20 @@
 import './playerArea.css';
 
-export default function PlayerArea({playerInfo, activePlayer, updatePlayerInfo}) {
+export default function PlayerArea({playerInfo, activePlayer, updateItemSelection}) {
   const handlePieceSelection = (piece, playerInfo) => {
+    if(piece.used || !activePlayer) return false;
 
-    playerInfo.Pieces.map(p => {
+    const allPieces = [...playerInfo.Pieces];
+    allPieces.map(p => {
       if(p.id === piece.id) {
-        piece.active = true;
-        return piece;
+        p.active = !p.active;
       } else {
-        piece.active = false;
-        return p;
+        p.active = false;
       }
-    })
+      return p;
+    });
     if(activePlayer) {
-      console.log(playerInfo, piece);
-      updatePlayerInfo(
-        playerInfo
-      )
+      updateItemSelection(allPieces)
     }
   }
 
@@ -30,15 +28,14 @@ export default function PlayerArea({playerInfo, activePlayer, updatePlayerInfo})
 
       <div className="allPieces">
         {playerInfo.Pieces.map(piece => {
+          let pieceClass = piece.active ? 'yellow' : piece.used ? "noColor" : playerInfo.Color; 
           return (
-
             <div 
-              className="piece" 
+              className={`piece ${pieceClass} ${piece.used && 'cursor'}`}
               key={piece.id} 
               style={{
                       width: piece.size, 
                       height: piece.size, 
-                      backgroundColor: playerInfo.Color
                     }}
               onClick={() => handlePieceSelection(piece, playerInfo)}
             >

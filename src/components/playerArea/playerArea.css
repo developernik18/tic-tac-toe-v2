@@ -15,8 +15,3 @@
   align-items: center;
 }
 
-.piece {
-  margin: 0 10px;
-  border-radius: 50%;
-  cursor: pointer;
-}

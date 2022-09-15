@@ -12,7 +12,7 @@ export const playerOne = {
   Name: 'Player red',
   Color: 'red',
   Pieces: playerPieces.map(piece => {
-    return {id: piece.id, size: ((piece.id * 8)+ 10) +'px'}
+    return {id: piece.id, size: ((piece.id * 8)+ 10)}
   })
 }
 
@@ -21,6 +21,6 @@ export const playerTwo = {
   Name: 'Player blue',
   Color: 'blue',
   Pieces: playerPieces.map(piece => {
-    return {id: piece.id, size: ((piece.id * 8)+ 10)+'px'}
+    return {id: piece.id + 6, size: ((piece.id * 8)+ 10)}
   })
 }
