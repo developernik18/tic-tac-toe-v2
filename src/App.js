@@ -4,16 +4,20 @@ import PlayerArea from './components/playerArea/PlayerArea';
 import PlayingArea from './components/playingArea/PlayingArea';
 import {playerOne, playerTwo} from './data';
 
+const p1 = "playerOne";
+const p2 = "playerTwo"
+
 function App() {
-  const [turn, setTurn] = useState('playerOne'); // playerOne, playerTwo or End state
+  const [turn, setTurn] = useState(p1); // playerOne, playerTwo or End state
   const [playerOneInfo, setPlayerOneInfo] = useState(playerOne);
   const [playerTwoInfo, setPlayerTwoInfo] = useState(playerTwo);
 
-  const playerOneActive = turn === "playerOne";
-  const playerTwoActive = turn === "playerTwo";
+  const playerOneActive = turn === p1;
+  const playerTwoActive = turn === p2;
+
 
   const handleItemSelection = (allPieces) => {
-    if(turn === "playerOne") {
+    if(turn === p1) {
       setPlayerOneInfo(prev => {return {...prev, Pieces: allPieces}});
     } else {
       setPlayerTwoInfo(prev => {return {...prev, Pieces: allPieces}});
@@ -33,7 +37,7 @@ function App() {
   }
 
   const handlePieceUsed = () => {
-    if(turn === "playerOne") {
+    if(turn === p1) {
       setPlayerOneInfo(saveUsedPieceInfo);
     } else {
       setPlayerTwoInfo(saveUsedPieceInfo);
@@ -41,9 +45,17 @@ function App() {
 
 
     setTurn(prev => {
-      if(prev === "playerOne") return "playerTwo";
-      if(prev === "playerTwo") return "playerOne";
+      if(prev === p1) return p2;
+      if(prev === p2) return p1;
     })
+  }
+
+  const getWinnerInfo = (playerId) => {
+    if(playerId === 1) {
+      return playerOneInfo;
+    } else {
+      return playerTwoInfo;
+    }
   }
 
   return (
@@ -57,6 +69,7 @@ function App() {
         <PlayingArea 
           playerInfo={playerOneActive ? playerOneInfo : playerTwoInfo} 
           handlePieceUsed={handlePieceUsed}
+          getWinnerInfo={getWinnerInfo}
         />
         <PlayerArea 
           playerInfo={playerTwoInfo} 

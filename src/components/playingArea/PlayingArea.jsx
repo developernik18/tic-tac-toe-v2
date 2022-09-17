@@ -1,5 +1,11 @@
+import { useEffect } from "react";
 import { useState } from "react";
+import Modal from "../shared/Modal";
 import "./playingArea.css";
+
+const winPattern = [
+  '012', '048', '036', '147', '246', '258', '345', '678'
+];
 
 const allBoxes = [
   { id: 1 },
@@ -13,15 +19,17 @@ const allBoxes = [
   { id: 9 },
 ];
 
-export default function PlayingArea({ playerInfo, handlePieceUsed }) {
+export default function PlayingArea({ playerInfo, handlePieceUsed, getWinnerInfo}) {
   const activePiece = playerInfo.Pieces.filter((p) => p.active)[0];
   const [boxes, setBoxes] = useState(allBoxes);
+  const [hiddenBoxes, setHiddenBoxes] = useState(allBoxes);
+  const [winner, setWinner] = useState(null);
 
   // create content based on playerInfo
   const  createContent = (playerInfo) => {
     return (
         <div 
-          className={`piece ${playerInfo.Color}`} 
+          className={`piece ${playerInfo.ColorName}`} 
           style={{
               width: activePiece.size, 
               height: activePiece.size, 
@@ -59,12 +67,12 @@ export default function PlayingArea({ playerInfo, handlePieceUsed }) {
   };
 
   // function to save piece position.
-  const handleMouseClick = (boxId) => {
+  const handleMouseClick = (boxId, pieceCanBeUsed) => {
     if(!activePiece) return false;
 
     setBoxes(prev => {
       return prev.map(box => {
-        if(box.id === boxId) {
+        if(box.id === boxId && box.hoverPiece) {
           box.placedPiece = box.hoverPiece;
           box.pieceSize = activePiece.size;
           box.playerId = playerInfo.Id;
@@ -73,8 +81,30 @@ export default function PlayingArea({ playerInfo, handlePieceUsed }) {
       })
     });
 
-    handlePieceUsed();
+    if(pieceCanBeUsed) {
+      handlePieceUsed();
+      setHiddenBoxes(boxes);
+    }
+
   }
+
+  useEffect(() => {
+    const checkForVictory = (gameBoxes) => {
+      winPattern.forEach(p => {
+        let firstBox = gameBoxes[p[0]];
+        let secondBox = gameBoxes[p[1]];
+        let thirdBox = gameBoxes[p[2]];
+  
+        if(firstBox.playerId && secondBox.playerId && thirdBox.playerId){
+          if(firstBox.playerId === secondBox.playerId && firstBox.playerId === thirdBox.playerId) {
+            setWinner(getWinnerInfo(firstBox.playerId));
+          }
+        }
+      });
+    }
+
+    checkForVictory(hiddenBoxes);
+  }, [hiddenBoxes, getWinnerInfo]);
 
   return (
     <div className="playingArea">
@@ -84,13 +114,14 @@ export default function PlayingArea({ playerInfo, handlePieceUsed }) {
             key={box.id}
             className="box"
             onMouseEnter={activePiece && (() => handleMouseEnter(box.id, playerInfo))}
-            onClick={() => handleMouseClick(box.id)}
+            onClick={() => handleMouseClick(box.id, box.hoverPiece)}
           >
             {box.hoverPiece}
             {!box.hoverPiece && box.placedPiece}
           </div>
         );
       })}
+      {winner && (<Modal winner={winner}/>)}
     </div>
   );
 }

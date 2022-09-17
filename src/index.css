@@ -1,10 +1,15 @@
+:root {
+  --bg-color: #31202b;
+  --neon-color: #ff14bd;
+}
+
 * {
   margin: 0;
   padding: 0;
 }
 
 body {
-  background-color: #f4f4f4;
+  background-color: var(--bg-color);
 }
 
 .piece {
@@ -13,17 +18,20 @@ body {
   cursor: pointer;
 }
 
-.red {
-  background-color: red;
+.piece1Color {
+  background-color: #ffa500;
+  box-shadow: 0px 0px 5px #ffa500;
 }
 
-.blue {
-  background-color: blue;
+.piece2Color {
+  background-color: #4dd2ff;
+  box-shadow: 0px 0px 5px #4dd2ff;
 }
 
 
 .yellow {
-  background-color: yellow;
+  background-color: transparent;
+  border: 1px solid #ffff00;
 }
 
 .noColor {

@@ -28,7 +28,7 @@ export default function PlayerArea({playerInfo, activePlayer, updateItemSelectio
 
       <div className="allPieces">
         {playerInfo.Pieces.map(piece => {
-          let pieceClass = piece.active ? 'yellow' : piece.used ? "noColor" : playerInfo.Color; 
+          let pieceClass = piece.active ? 'yellow' : piece.used ? "noColor" : playerInfo.ColorName; 
           return (
             <div 
               className={`piece ${pieceClass} ${piece.used && 'cursor'}`}
